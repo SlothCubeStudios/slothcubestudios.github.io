@@ -56,7 +56,7 @@
                 <a href="#products" class="hover:text-[#5dade2] transition duration-300">Games</a>
                 <a href="#team" class="hover:text-[#5dade2] transition duration-300">The Squad</a>
                 <!-- Updated Admin link to call the password function -->
-                <a href="#" onclick="checkAdminAccess(event)" class="hover:text-red-400 transition duration-300">Admin</a>
+                <a href="#" onclick="showPasswordModal(event)" class="hover:text-red-400 transition duration-300">Admin</a>
             </nav>
         </div>
     </header>
@@ -198,17 +198,44 @@
             <div id="status-message" class="mt-4 p-3 border-l-4 text-sm hidden brand-font" role="alert"></div>
         </section>
 
-        <!-- Modals for Purchase Confirmation -->
+        <!-- MODAL CONTAINER (Used for Purchase, Password, and Messages) -->
+        
+        <!-- 1. Password Modal -->
+        <div id="password-modal" class="fixed inset-0 bg-black bg-opacity-90 hidden items-center justify-center p-4 z-[101] backdrop-blur-sm">
+            <div class="bg-[#1a2530] p-8 border-2 border-red-400 max-w-sm w-full shadow-[0_0_50px_rgba(255,100,100,0.2)]">
+                <h3 class="text-2xl font-bold mb-4 text-red-400 brand-font uppercase">Admin Access</h3>
+                <p class="mb-4 text-white font-light">Enter the admin password to unlock write access.</p>
+                <input type="password" id="admin-password-input" placeholder="Password: slothcube" class="w-full p-3 mb-6 bg-[#151f28] border border-[#34495e] text-white focus:border-red-400 focus:outline-none brand-font">
+                <div class="flex justify-end space-x-4">
+                    <button onclick="closeModal('password-modal')" class="py-2 px-6 border border-gray-600 text-gray-400 hover:text-white hover:border-white transition duration-200 brand-font uppercase">Cancel</button>
+                    <button onclick="handlePasswordSubmit()" class="py-2 px-6 bg-red-500 text-[#1a2530] font-bold hover:bg-white transition duration-200 brand-font uppercase shadow-[4px_4px_0px_#000]">Unlock</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Purchase Modal (General Confirmation) -->
         <div id="purchase-modal" class="fixed inset-0 bg-black bg-opacity-90 hidden items-center justify-center p-4 z-[100] backdrop-blur-sm">
             <div class="bg-[#1a2530] p-8 border-2 border-[#5dade2] max-w-sm w-full shadow-[0_0_50px_rgba(93,173,226,0.2)]">
                 <h3 class="text-2xl font-bold mb-4 text-[#5dade2] brand-font uppercase">Confirm Purchase</h3>
                 <p id="modal-message" class="mb-8 text-white font-light"></p>
                 <div class="flex justify-end space-x-4">
-                    <button onclick="closeModal()" class="py-2 px-6 border border-gray-600 text-gray-400 hover:text-white hover:border-white transition duration-200 brand-font uppercase">Cancel</button>
+                    <button onclick="closeModal('purchase-modal')" class="py-2 px-6 border border-gray-600 text-gray-400 hover:text-white hover:border-white transition duration-200 brand-font uppercase">Cancel</button>
                     <button onclick="simulatePurchase()" class="py-2 px-6 bg-[#5dade2] text-[#1a2530] font-bold hover:bg-white transition duration-200 brand-font uppercase shadow-[4px_4px_0px_#000]">Buy Now</button>
                 </div>
             </div>
         </div>
+
+        <!-- 3. Message/Alert Modal (For generic success/errors like incorrect password) -->
+        <div id="message-modal" class="fixed inset-0 bg-black bg-opacity-90 hidden items-center justify-center p-4 z-[102] backdrop-blur-sm">
+            <div class="bg-[#1a2530] p-8 border-2 max-w-sm w-full" id="message-modal-content">
+                <h3 id="msg-title" class="text-2xl font-bold mb-4 brand-font uppercase"></h3>
+                <p id="msg-text" class="mb-8 text-white font-light"></p>
+                <div class="flex justify-end">
+                    <button onclick="closeModal('message-modal')" class="py-2 px-6 bg-[#5dade2] text-[#1a2530] font-bold hover:bg-white transition duration-200 brand-font uppercase">OK</button>
+                </div>
+            </div>
+        </div>
+
 
     </main>
 
@@ -229,7 +256,6 @@
 
         // Global Variables
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        // Parse config safely
         let firebaseConfig = null;
         try {
             firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
@@ -241,27 +267,44 @@
         let usingFallbackMode = false;
         
         // --- ADMIN ACCESS CONTROL ---
-        // Password for the Admin Panel: slothcube
         const ADMIN_PASSWORD = "slothcube";
+        let isAdminLoggedIn = false; // Internal flag to bypass client-side read-only UI if password is correct
         
-        window.checkAdminAccess = function(event) {
+        window.showPasswordModal = function(event) {
             event.preventDefault();
-            
-            // Use a custom modal instead of prompt/alert, as required by instructions
-            const passwordModal = document.getElementById('password-modal');
-            if (passwordModal) {
-                 passwordModal.classList.remove('hidden');
-                 passwordModal.classList.add('flex');
-            } else {
-                // Fallback to simple prompt if custom modal isn't built (for now, using browser prompt)
-                const password = prompt("Enter Admin Password:");
-                if (password === ADMIN_PASSWORD) {
-                    document.getElementById('admin').classList.remove('hidden');
-                    // Scroll to admin section
-                    document.getElementById('admin').scrollIntoView({ behavior: 'smooth' });
-                } else if (password !== null) {
-                    alert("Incorrect Password."); // Using alert here temporarily until custom modal is added
+            // If already logged in, just scroll to admin section
+            if (isAdminLoggedIn) {
+                 document.getElementById('admin').classList.remove('hidden');
+                 document.getElementById('admin').scrollIntoView({ behavior: 'smooth' });
+                 return;
+            }
+            const modal = document.getElementById('password-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.getElementById('admin-password-input').focus();
+        }
+
+        window.handlePasswordSubmit = function() {
+            const passwordInput = document.getElementById('admin-password-input');
+            const password = passwordInput.value;
+            passwordInput.value = ''; // Clear input immediately
+            closeModal('password-modal');
+
+            if (password === ADMIN_PASSWORD) {
+                isAdminLoggedIn = true;
+                document.getElementById('admin').classList.remove('hidden');
+                document.getElementById('admin').scrollIntoView({ behavior: 'smooth' });
+                showToastMessage('Admin Unlocked', 'Welcome back, SlothCube Admin.', 'success');
+                // Re-render admin forms to potentially enable buttons if we are only in fallback mode 
+                // due to initial lack of data, and not a definitive permission error.
+                if (db) { 
+                    // This call will force the buttons to re-evaluate their state based on isAdminLoggedIn
+                    setupRealtimeListeners();
+                } else {
+                    renderAdminForms(initialProducts);
                 }
+            } else {
+                showToastMessage('Access Denied', 'Incorrect password. Access is restricted.', 'error');
             }
         }
         
@@ -290,7 +333,7 @@
                 dot.className = "relative inline-flex rounded-full h-3 w-3 bg-red-500";
                 ping.className = "hidden";
                 text.className = "text-xs font-mono text-red-500";
-                text.textContent = "OFFLINE MODE (READ-ONLY)"; // Clearer message
+                text.textContent = "OFFLINE MODE (READ-ONLY)"; 
                 
                 log.textContent = "Database Error: " + msg;
                 log.classList.remove('hidden');
@@ -353,7 +396,6 @@
 
         function getProductsCollectionRef() {
             if(!db) return null;
-            // Using the public data path as specified by security rules
             return collection(db, `artifacts/${appId}/public/data/products`);
         }
         
@@ -368,17 +410,14 @@
             if (!productsRef) return;
 
             try {
-                // Attempt a read
                 const snapshot = await getDocs(productsRef);
                 if (snapshot.empty) {
-                    // If empty, attempt to seed
                     for (const product of initialProducts) {
+                        // Using setDoc to prevent unnecessary re-seeds on every load
                         await setDoc(doc(productsRef, product.id), product);
                     }
                 }
             } catch (e) {
-                // If read or write fails here, the onSnapshot listener will catch it,
-                // but we log it for completeness.
                 console.error("Seeding/Initial Check error:", e);
             }
         }
@@ -387,6 +426,7 @@
             const productsRef = getProductsCollectionRef();
             if (!productsRef) return;
 
+            // This listener must be set up regardless of auth status to listen for public data
             onSnapshot(productsRef, (snapshot) => {
                 updateStatus('success');
                 const products = [];
@@ -394,7 +434,6 @@
                     products.push({ id: doc.id, ...doc.data() });
                 });
                 
-                // Show fetched data, or initial if DB is connected but empty
                 const dataToShow = products.length > 0 ? products : initialProducts;
 
                 renderProducts(dataToShow);
@@ -405,7 +444,6 @@
 
             }, (error) => {
                 console.error("Snapshot error:", error);
-                // Trigger full error state which initiates fallback/offline mode
                 updateStatus('error', error.message);
             });
         }
@@ -433,9 +471,11 @@
 
         function renderAdminForms(products) {
             const container = document.getElementById('admin-form-container');
-            // Check if updates are possible for the Admin UI text
-            const buttonClass = usingFallbackMode ? 'bg-gray-500 cursor-not-allowed' : 'border-red-500 text-red-500 hover:bg-red-500 hover:text-white';
-            const buttonText = usingFallbackMode ? 'Read Only' : 'Update';
+            // Check if updates are truly possible (DB connection is up AND admin is logged in)
+            const canWrite = !usingFallbackMode && isAdminLoggedIn; 
+            
+            const buttonClass = canWrite ? 'border-red-500 text-red-500 hover:bg-red-500 hover:text-white' : 'bg-gray-500 cursor-not-allowed text-gray-800 border-gray-500';
+            const buttonText = canWrite ? 'Update' : (usingFallbackMode ? 'Read Only (Offline)' : 'Update Blocked');
 
             container.innerHTML = products.map(product => `
                 <div class="p-4 bg-[#1a2530] border border-[#34495e] flex flex-col md:flex-row justify-between items-center space-y-3 md:space-y-0 md:space-x-4">
@@ -446,11 +486,12 @@
                                id="price-${product.id}" 
                                value="${Number(product.price).toFixed(2)}" 
                                class="w-full p-2 bg-[#151f28] border border-[#34495e] text-white focus:border-[#5dade2] focus:outline-none brand-font"
-                               ${usingFallbackMode ? 'disabled' : ''}>
+                               ${!canWrite ? 'disabled' : ''}>
                     </div>
                     <button 
                         onclick="updatePrice('${product.id}')" 
-                        class="w-full md:w-auto py-2 px-6 bg-transparent border ${buttonClass} font-bold uppercase brand-font transition duration-200">
+                        class="w-full md:w-auto py-2 px-6 bg-transparent border ${buttonClass} font-bold uppercase brand-font transition duration-200"
+                        ${!canWrite ? 'disabled' : ''}>
                         ${buttonText}
                     </button>
                 </div>
@@ -461,8 +502,12 @@
         }
 
         window.updatePrice = async function(productId) {
+            if (!isAdminLoggedIn) {
+                showToastMessage("Access Denied", "You must be logged in as Admin to perform write operations.", 'error');
+                return;
+            }
             if (usingFallbackMode) {
-                displayStatus("ERROR: Cannot save changes in Offline (Read-Only) Mode.", 'error');
+                showToastMessage("Offline Mode", "Cannot save changes while in Offline (Read-Only) Mode.", 'error');
                 return;
             }
 
@@ -479,22 +524,23 @@
             button.textContent = '...';
             
             try {
+                // Anonymous user attempts to write here. If it fails due to DB rules, the error is caught below.
                 await setDoc(docRef, { price: newPrice }, { merge: true });
-                displayStatus(`Successfully updated ${productId} to $${newPrice}`, 'success');
+                showToastMessage('Update Success', `Successfully updated ${productId} to $${newPrice}`, 'success');
             } catch (e) {
-                // Catching the explicit permissions error here
+                // Crucial error handling for security/permissions issues
                 if (e.code === 'permission-denied') {
-                    displayStatus('ERROR: Write permission denied. Admin panel is read-only.', 'error');
+                    showToastMessage('Permission Denied', 'Database rules prevent this user from writing to the public collection. Check security rules.', 'error');
                     updateStatus('error', 'Write permission denied');
                 } else {
-                    displayStatus('Error updating: ' + e.message, 'error');
+                    showToastMessage('Error', 'Error updating: ' + e.message, 'error');
                 }
             } finally {
                 button.textContent = originalText;
             }
         }
 
-        // UI Helpers
+        // --- MODAL & MESSAGE HELPERS ---
         let currentProductId = null;
         let currentPrice = null;
 
@@ -506,35 +552,42 @@
             modal.classList.remove('hidden');
             modal.classList.add('flex');
         }
-
-        window.closeModal = function() {
-            const modal = document.getElementById('purchase-modal');
+        
+        window.closeModal = function(id) {
+            const modal = document.getElementById(id);
             modal.classList.add('hidden');
             modal.classList.remove('flex');
         }
-
+        
         window.simulatePurchase = function() {
             if (!currentProductId) return;
-            // Success logic here
-            closeModal();
-            displayStatus("Purchase simulation successful!", "success");
+            closeModal('purchase-modal');
+            showToastMessage("Purchase Simulation", "Purchase simulation successful! Thanks for buying.", "success");
         }
 
-        function displayStatus(message, type) {
-            const statusDiv = document.getElementById('status-message');
-            statusDiv.textContent = message;
-            statusDiv.className = 'mt-4 p-3 border-l-4 text-sm brand-font';
-            statusDiv.classList.remove('hidden');
+        function showToastMessage(title, message, type) {
+            const modal = document.getElementById('message-modal');
+            const content = document.getElementById('message-modal-content');
+            const titleEl = document.getElementById('msg-title');
+            const textEl = document.getElementById('msg-text');
+            
+            titleEl.textContent = title;
+            textEl.textContent = message;
+
+            content.className = 'bg-[#1a2530] p-8 border-2 max-w-sm w-full';
 
             if (type === 'success') {
-                statusDiv.classList.add('border-green-500', 'bg-green-900/20', 'text-green-400');
-            } else {
-                statusDiv.classList.add('border-red-500', 'bg-red-900/20', 'text-red-400');
+                titleEl.classList.add('text-green-400');
+                content.classList.add('border-green-400');
+                content.classList.remove('border-red-400');
+            } else { // error or generic
+                titleEl.classList.add('text-red-400');
+                content.classList.add('border-red-400');
+                content.classList.remove('border-green-400');
             }
 
-            setTimeout(() => {
-                statusDiv.classList.add('hidden');
-            }, 3000);
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
         }
 
         initializeFirebase();
