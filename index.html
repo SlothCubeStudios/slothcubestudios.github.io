@@ -127,3 +127,382 @@
                     </div>
                     <div class="p-4">
                         <p class="text-sm text-gray-400 mb-4">Writes code faster than a sloth moves (barely).</p>
+                        <div class="flex justify-center space-x-4 text-[#5dade2]">
+                            <a href="#" class="hover:text-white brand-font">GITHUB</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Member 3 -->
+                <div class="bg-[#212e3b] p-0 border-2 border-[#34495e] hover:border-[#5dade2] transition duration-300 group">
+                    <div class="bg-[#34495e] p-4 text-center">
+                        <img src="https://placehold.co/150x150/1a2530/5dade2?text=Sfx" alt="Audio" class="w-24 h-24 mx-auto rounded-none border-2 border-white mb-2">
+                        <h3 class="text-xl font-bold text-white brand-font">Jo "Chill"</h3>
+                        <p class="text-[#5dade2] text-sm brand-font">Audio</p>
+                    </div>
+                    <div class="p-4">
+                        <p class="text-sm text-gray-400 mb-4">Lo-fi beats to code/relax to.</p>
+                        <div class="flex justify-center space-x-4 text-[#5dade2]">
+                            <a href="#" class="hover:text-white brand-font">SOUNDCLOUD</a>
+                        </div>
+                    </div>
+                </div>
+                
+                 <!-- Team Member 4 -->
+                <div class="bg-[#212e3b] p-0 border-2 border-[#34495e] hover:border-[#5dade2] transition duration-300 group">
+                    <div class="bg-[#34495e] p-4 text-center">
+                        <img src="https://placehold.co/150x150/1a2530/5dade2?text=Mkt" alt="Marketing" class="w-24 h-24 mx-auto rounded-none border-2 border-white mb-2">
+                        <h3 class="text-xl font-bold text-white brand-font">Max "Hype"</h3>
+                        <p class="text-[#5dade2] text-sm brand-font">Community</p>
+                    </div>
+                    <div class="p-4">
+                        <p class="text-sm text-gray-400 mb-4">Spreading the word, one pixel at a time.</p>
+                        <div class="flex justify-center space-x-4 text-[#5dade2]">
+                            <a href="#" class="hover:text-white brand-font">DISCORD</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Admin/Pricing Panel with Diagnostics -->
+        <section id="admin" class="p-8 bg-[#212e3b] border-2 border-[#34495e] relative overflow-hidden mb-12">
+            <div class="absolute top-0 right-0 p-4 opacity-10 font-bold text-9xl text-white pointer-events-none brand-font select-none">ADMIN</div>
+            
+            <div class="flex justify-between items-center border-b border-[#34495e] pb-4 mb-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-[#5dade2] mb-2 brand-font">Product Control</h2>
+                    <p class="text-gray-400">Adjust game pricing. Updates are live.</p>
+                </div>
+                <!-- Connection Status Indicator -->
+                <div id="connection-status" class="flex items-center space-x-2 bg-[#1a2530] px-4 py-2 rounded border border-[#34495e]">
+                    <span class="relative flex h-3 w-3">
+                      <span id="status-ping" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
+                      <span id="status-dot" class="relative inline-flex rounded-full h-3 w-3 bg-yellow-500"></span>
+                    </span>
+                    <span id="status-text" class="text-xs font-mono text-yellow-500">Connecting...</span>
+                </div>
+            </div>
+
+            <!-- Status and Error Logs -->
+            <p id="admin-loading" class="text-center text-gray-500 mb-4">Connecting to database...</p>
+            
+            <div id="admin-form-container" class="space-y-4 relative z-10">
+                <!-- Forms Injected Here -->
+            </div>
+            
+            <!-- Error Log Display -->
+            <div id="error-log" class="mt-4 p-3 bg-red-900/30 border border-red-500 text-red-200 text-xs font-mono hidden"></div>
+
+            <div id="status-message" class="mt-4 p-3 border-l-4 text-sm hidden brand-font" role="alert"></div>
+        </section>
+
+        <!-- Modals for Purchase Confirmation -->
+        <div id="purchase-modal" class="fixed inset-0 bg-black bg-opacity-90 hidden items-center justify-center p-4 z-[100] backdrop-blur-sm">
+            <div class="bg-[#1a2530] p-8 border-2 border-[#5dade2] max-w-sm w-full shadow-[0_0_50px_rgba(93,173,226,0.2)]">
+                <h3 class="text-2xl font-bold mb-4 text-[#5dade2] brand-font uppercase">Confirm Purchase</h3>
+                <p id="modal-message" class="mb-8 text-white font-light"></p>
+                <div class="flex justify-end space-x-4">
+                    <button onclick="closeModal()" class="py-2 px-6 border border-gray-600 text-gray-400 hover:text-white hover:border-white transition duration-200 brand-font uppercase">Cancel</button>
+                    <button onclick="simulatePurchase()" class="py-2 px-6 bg-[#5dade2] text-[#1a2530] font-bold hover:bg-white transition duration-200 brand-font uppercase shadow-[4px_4px_0px_#000]">Buy Now</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#151f28] py-8 border-t border-[#34495e]">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h2 class="text-2xl font-bold text-white brand-font mb-2">SLOTH<span class="text-[#5dade2]">CUBE</span> STUDIOS</h2>
+            <p class="text-gray-500 text-sm">&copy; 2025. Stay Square.</p>
+        </div>
+    </footer>
+
+
+    <!-- Firebase/Firestore and Game Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global Variables
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        // Parse config safely
+        let firebaseConfig = null;
+        try {
+            firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+        } catch(e) { console.error("Config parse error"); }
+        
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        let db, auth, userId;
+        let usingFallbackMode = false;
+        
+        // Initial Data (Used for seeding AND fallback)
+        const initialProducts = [
+            { id: 'cube-quest', name: 'Cube Quest', description: 'Explore an infinite procedural dungeon made entirely of 1x1 blocks.', imageUrl: 'https://placehold.co/400x225/5dade2/1a2530?text=Cube+Quest', price: 14.99 },
+            { id: 'lazy-kart', name: 'Lazy Kart', description: 'The slowest racing game ever made. Strategy over speed.', imageUrl: 'https://placehold.co/400x225/34495e/ffffff?text=Lazy+Kart', price: 9.99 },
+            { id: 'pixel-punch', name: 'Pixel Punch', description: 'A retro brawler with physics-based combat.', imageUrl: 'https://placehold.co/400x225/ffffff/1a2530?text=Pixel+Punch', price: 4.99 },
+        ];
+
+        // --- Status Updates UI ---
+        function updateStatus(state, msg) {
+            const dot = document.getElementById('status-dot');
+            const ping = document.getElementById('status-ping');
+            const text = document.getElementById('status-text');
+            const log = document.getElementById('error-log');
+            const loader = document.getElementById('admin-loading');
+
+            if (state === 'success') {
+                dot.className = "relative inline-flex rounded-full h-3 w-3 bg-green-500";
+                ping.className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75";
+                text.className = "text-xs font-mono text-green-500";
+                text.textContent = "DB CONNECTED";
+                if(loader) loader.classList.add('hidden');
+            } else if (state === 'error') {
+                dot.className = "relative inline-flex rounded-full h-3 w-3 bg-red-500";
+                ping.className = "hidden";
+                text.className = "text-xs font-mono text-red-500";
+                text.textContent = "OFFLINE MODE";
+                
+                log.textContent = "Error: " + msg;
+                log.classList.remove('hidden');
+                
+                if(loader) loader.classList.add('hidden');
+
+                // Activate Fallback if not already active
+                if (!usingFallbackMode) {
+                    usingFallbackMode = true;
+                    console.log("Activating fallback mode...");
+                    renderProducts(initialProducts);
+                    renderAdminForms(initialProducts); // Admin forms will be read-only in logic
+                    document.getElementById('loading-container').classList.add('hidden');
+                    document.getElementById('products-container').classList.remove('hidden');
+                }
+            } else {
+                // Loading
+                text.textContent = "CONNECTING...";
+            }
+        }
+
+        async function initializeFirebase() {
+            if (!firebaseConfig) {
+                updateStatus('error', "No Firebase Configuration Found. Using offline mode.");
+                return;
+            }
+
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        userId = user.uid;
+                        // Start listeners
+                        setupRealtimeListeners();
+                        // Seed data if needed
+                        ensureInitialProductsExist();
+                    } else {
+                         // If we lost auth, try to re-auth anonymously if not using custom token flow currently
+                         // But don't loop infinitely.
+                         console.log("User logged out or not auth yet.");
+                    }
+                });
+
+                // Auth Logic: Custom Token -> Anonymous
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken).catch(async (e) => {
+                        console.warn("Custom token failed, trying anon:", e);
+                        await signInAnonymously(auth);
+                    });
+                } else {
+                    await signInAnonymously(auth);
+                }
+
+            } catch (error) {
+                console.error("Init failed:", error);
+                updateStatus('error', error.message);
+            }
+        }
+
+        function getProductsCollectionRef() {
+            if(!db) return null;
+            return collection(db, `artifacts/${appId}/public/data/products`);
+        }
+        
+        function getProductDocRef(productId) {
+            if(!db) return null;
+            return doc(db, `artifacts/${appId}/public/data/products/${productId}`);
+        }
+
+        async function ensureInitialProductsExist() {
+            if(usingFallbackMode) return;
+            const productsRef = getProductsCollectionRef();
+            if (!productsRef) return;
+
+            try {
+                // Check if we can read. If this throws permission denied, we catch it.
+                const snapshot = await getDocs(productsRef);
+                if (snapshot.empty) {
+                    for (const product of initialProducts) {
+                        await setDoc(doc(productsRef, product.id), product);
+                    }
+                }
+            } catch (e) {
+                console.error("Seeding error (likely permissions, switching to fallback):", e);
+                // If we can't seed, we likely can't read either. 
+                // We don't force fallback here immediately, we let the onSnapshot listener fail to trigger it properly.
+            }
+        }
+
+        function setupRealtimeListeners() {
+            const productsRef = getProductsCollectionRef();
+            if (!productsRef) return;
+
+            onSnapshot(productsRef, (snapshot) => {
+                updateStatus('success');
+                const products = [];
+                snapshot.forEach((doc) => {
+                    products.push({ id: doc.id, ...doc.data() });
+                });
+                
+                // If empty snapshot (but connected), might be new app, show initial
+                const dataToShow = products.length > 0 ? products : initialProducts;
+
+                renderProducts(dataToShow);
+                renderAdminForms(dataToShow);
+
+                document.getElementById('loading-container').classList.add('hidden');
+                document.getElementById('products-container').classList.remove('hidden');
+
+            }, (error) => {
+                console.error("Snapshot error:", error);
+                // This is where we catch the permission error and trigger offline mode
+                updateStatus('error', error.message);
+            });
+        }
+        
+        function renderProducts(products) {
+            const container = document.getElementById('products-container');
+            container.innerHTML = products.map(product => `
+                <div class="bg-[#212e3b] border-2 border-[#34495e] p-4 relative group hover:-translate-y-1 hover:border-[#5dade2] transition duration-300">
+                    <div class="absolute top-0 right-0 bg-[#5dade2] text-[#1a2530] font-bold px-3 py-1 brand-font text-lg z-10 shadow-md">
+                        $${Number(product.price).toFixed(2)}
+                    </div>
+                    <div class="overflow-hidden border border-[#34495e] mb-4">
+                        <img src="${product.imageUrl}" alt="${product.name}" class="w-full h-auto object-cover transform group-hover:scale-110 transition duration-500">
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-2 brand-font uppercase">${product.name}</h3>
+                    <p class="text-gray-400 mb-6 font-light text-sm h-12">${product.description}</p>
+                    <button 
+                        onclick="showPurchaseModal('${product.id}', '${product.name}', ${product.price})" 
+                        class="w-full py-3 bg-[#34495e] hover:bg-[#5dade2] text-white hover:text-[#1a2530] font-bold uppercase brand-font tracking-wider transition duration-300">
+                        Add to Cart
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function renderAdminForms(products) {
+            const container = document.getElementById('admin-form-container');
+            // Safe render: doesn't assume loader is inside
+            container.innerHTML = products.map(product => `
+                <div class="p-4 bg-[#1a2530] border border-[#34495e] flex flex-col md:flex-row justify-between items-center space-y-3 md:space-y-0 md:space-x-4">
+                    <span class="font-bold text-lg text-white w-full md:w-1/3 brand-font uppercase">${product.name}</span>
+                    <div class="flex items-center space-x-2 w-full md:w-1/3">
+                        <label class="text-[#5dade2] brand-font">$</label>
+                        <input type="number" step="0.01" min="0" 
+                               id="price-${product.id}" 
+                               value="${Number(product.price).toFixed(2)}" 
+                               class="w-full p-2 bg-[#151f28] border border-[#34495e] text-white focus:border-[#5dade2] focus:outline-none brand-font">
+                    </div>
+                    <button 
+                        onclick="updatePrice('${product.id}')" 
+                        class="w-full md:w-auto py-2 px-6 bg-transparent border border-red-500 text-red-500 hover:bg-red-500 hover:text-white font-bold uppercase brand-font transition duration-200">
+                        Update
+                    </button>
+                </div>
+            `).join('');
+            
+            // Hide the loader if it exists (it's now outside the container)
+            const loader = document.getElementById('admin-loading');
+            if(loader) loader.classList.add('hidden');
+        }
+
+        window.updatePrice = async function(productId) {
+            if (usingFallbackMode) {
+                alert("You are in Offline Mode. Database changes will not be saved.");
+                return;
+            }
+
+            const inputElement = document.getElementById(`price-${productId}`);
+            let newPrice = parseFloat(inputElement.value);
+
+            if (isNaN(newPrice) || newPrice < 0) return;
+
+            newPrice = parseFloat(newPrice.toFixed(2));
+            const docRef = getProductDocRef(productId);
+            const button = inputElement.parentElement.nextElementSibling;
+            
+            const originalText = button.textContent;
+            button.textContent = '...';
+            
+            try {
+                await setDoc(docRef, { price: newPrice }, { merge: true });
+                displayStatus(`Updated ${productId}`, 'success');
+            } catch (e) {
+                displayStatus('Error updating: ' + e.message, 'error');
+            } finally {
+                button.textContent = originalText;
+            }
+        }
+
+        // UI Helpers
+        let currentProductId = null;
+        let currentPrice = null;
+
+        window.showPurchaseModal = function(id, name, price) {
+            currentProductId = id;
+            currentPrice = price;
+            document.getElementById('modal-message').textContent = `Purchase "${name}" for $${price.toFixed(2)}?`;
+            const modal = document.getElementById('purchase-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        window.closeModal = function() {
+            const modal = document.getElementById('purchase-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        window.simulatePurchase = function() {
+            if (!currentProductId) return;
+            // Success logic here
+            closeModal();
+            displayStatus("Purchase simulation successful!", "success");
+        }
+
+        function displayStatus(message, type) {
+            const statusDiv = document.getElementById('status-message');
+            statusDiv.textContent = message;
+            statusDiv.className = 'mt-4 p-3 border-l-4 text-sm brand-font';
+            statusDiv.classList.remove('hidden');
+
+            if (type === 'success') {
+                statusDiv.classList.add('border-green-500', 'bg-green-900/20', 'text-green-400');
+            } else {
+                statusDiv.classList.add('border-red-500', 'bg-red-900/20', 'text-red-400');
+            }
+
+            setTimeout(() => {
+                statusDiv.classList.add('hidden');
+            }, 3000);
+        }
+
+        initializeFirebase();
+    </script>
+</body>
+</html>
