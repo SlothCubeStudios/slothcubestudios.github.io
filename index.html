@@ -3,435 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stellar Forge Games</title>
+    <title>Sloth Cube Studios</title>
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Use Inter Font -->
+    <!-- Fonts: Chakra Petch for headers, Inter for body -->
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Inter:wght@300;400;600&display=swap');
+        
+        :root {
+            --sloth-blue: #5dade2;
+            --sloth-dark: #34495e;
+            --sloth-bg: #1a2530;
+            --sloth-text: #ecf0f1;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0d1117; /* Dark background */
-            color: #c9d1d9; /* Light text */
+            background-color: var(--sloth-bg);
+            color: var(--sloth-text);
         }
+
+        h1, h2, h3, .brand-font {
+            font-family: 'Chakra Petch', sans-serif;
+            text-transform: uppercase;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #1a2530; }
+        ::-webkit-scrollbar-thumb { background: #34495e; border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: #5dade2; }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen flex flex-col">
 
-    <!-- Header & Navigation -->
-    <header class="sticky top-0 z-50 bg-[#161b22] shadow-lg border-b border-gray-700">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-[#151f28] shadow-lg border-b border-[#34495e]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-            <h1 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500 tracking-wider">
-                Stellar Forge
-            </h1>
-            <nav class="space-x-8 text-lg hidden md:flex">
-                <a href="#products" class="hover:text-teal-400 transition duration-300">Products</a>
-                <a href="#team" class="hover:text-teal-400 transition duration-300">Team</a>
-                <a href="#admin" class="hover:text-red-400 transition duration-300">Admin (Set Prices)</a>
+            <div class="flex items-center space-x-3">
+                <!-- Sloth Cube Logo -->
+                <div class="w-10 h-10 bg-[#5dade2] border-2 border-black rounded-sm relative flex items-center justify-center shadow-[0_0_10px_rgba(93,173,226,0.5)]">
+                    <div class="absolute top-3 left-1 w-3 h-3 bg-[#34495e] rounded-full opacity-80"></div>
+                    <div class="absolute top-3 right-1 w-3 h-3 bg-[#34495e] rounded-full opacity-80"></div>
+                    <div class="absolute bottom-2 w-4 h-2 bg-black rounded-full"></div>
+                </div>
+                <h1 class="text-3xl font-bold text-white tracking-widest brand-font">
+                    SLOTH<span class="text-[#5dade2]">CUBE</span>
+                </h1>
+            </div>
+
+            <nav class="space-x-8 text-lg hidden md:flex font-semibold brand-font">
+                <a href="#products" class="hover:text-[#5dade2] transition duration-300">Games</a>
+                <a href="#team" class="hover:text-[#5dade2] transition duration-300">The Squad</a>
+                <a href="#admin" class="hover:text-red-400 transition duration-300">Admin</a>
             </nav>
         </div>
     </header>
 
-    <!-- Main Content Container -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-grow">
 
-        <!-- Hero Section -->
+        <!-- Hero -->
         <section id="hero" class="text-center mb-24 pt-8">
-            <h2 class="text-6xl font-extrabold mb-4 text-white">Crafting Worlds, Forging Stars.</h2>
-            <p class="text-xl text-gray-400 max-w-3xl mx-auto">
-                We are Stellar Forge Games, a passionate indie studio dedicated to building immersive and unforgettable digital experiences.
+            <h2 class="text-5xl md:text-7xl font-bold mb-6 text-white brand-font">
+                Slow Down. <br/><span class="text-[#5dade2]">Play Hard.</span>
+            </h2>
+            <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-8 font-light">
+                We build blocky worlds and chill experiences. Welcome to the cube.
             </p>
+            <a href="#products" class="inline-block bg-[#5dade2] text-[#1a2530] font-bold py-3 px-8 rounded-none border-2 border-[#5dade2] hover:bg-transparent hover:text-[#5dade2] transition duration-300 brand-font text-xl shadow-[4px_4px_0px_#34495e] hover:shadow-[2px_2px_0px_#34495e] hover:translate-x-[2px] hover:translate-y-[2px]">
+                Browse Games
+            </a>
         </section>
 
-        <!-- Products Section -->
+        <!-- Products -->
         <section id="products" class="mb-24">
-            <h2 class="text-4xl font-bold border-b-4 border-teal-400 pb-3 mb-12 inline-block">Our Products</h2>
-
-            <!-- Loader / Error Message -->
-            <div id="loading-message" class="text-center py-12">
-                <p class="text-xl text-gray-500">Loading games...</p>
-                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-teal-400 mx-auto mt-4"></div>
+            <div class="flex items-center mb-12">
+                <div class="h-8 w-8 bg-[#5dade2] mr-4 border-2 border-black"></div>
+                <h2 class="text-4xl font-bold text-white brand-font">Our Games</h2>
             </div>
 
-            <!-- Products Grid (Populated by JS) -->
-            <div id="products-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                <!-- Product cards will be injected here -->
+            <!-- Loader / Fallback Message -->
+            <div id="loading-container" class="text-center py-12">
+                <p class="text-xl text-gray-500 brand-font">Loading pixels...</p>
+                <div class="animate-spin h-10 w-10 border-4 border-[#34495e] border-t-[#5dade2] rounded-full mx-auto mt-4"></div>
+            </div>
+
+            <!-- Products Grid -->
+            <div id="products-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 hidden">
+                <!-- Injected via JS -->
             </div>
         </section>
 
-        <!-- Team Section -->
+        <!-- Team -->
         <section id="team" class="mb-24">
-            <h2 class="text-4xl font-bold border-b-4 border-blue-500 pb-3 mb-12 inline-block">Meet the Forge</h2>
-            <div id="team-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Team Member Card -->
-                <div class="bg-[#1f2937] p-6 rounded-xl shadow-2xl transition duration-500 hover:shadow-teal-500/50 hover:scale-[1.02]">
-                    <img src="https://placehold.co/150x150/111827/ffffff?text=Designer" alt="Profile of Anya" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-teal-400">
-                    <h3 class="text-2xl font-semibold text-white text-center">Anya Sharma</h3>
-                    <p class="text-teal-400 text-center mb-4">Lead Designer</p>
-                    <p class="text-sm text-gray-400 mb-4 text-center">Anya crafts the look, feel, and narrative flow of our worlds.</p>
-                    <div class="flex justify-center space-x-3 text-2xl">
-                        <a href="#" class="text-gray-400 hover:text-white transition duration-200" title="Twitter/X">X</a>
-                        <a href="#" class="text-gray-400 hover:text-white transition duration-200" title="LinkedIn">in</a>
-                    </div>
-                </div>
-
-                <div class="bg-[#1f2937] p-6 rounded-xl shadow-2xl transition duration-500 hover:shadow-teal-500/50 hover:scale-[1.02]">
-                    <img src="https://placehold.co/150x150/111827/ffffff?text=Dev" alt="Profile of Ben" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-blue-500">
-                    <h3 class="text-2xl font-semibold text-white text-center">Ben Carter</h3>
-                    <p class="text-blue-500 text-center mb-4">Core Developer</p>
-                    <p class="text-sm text-gray-400 mb-4 text-center">The architect behind our code, ensuring smooth, bug-free gameplay.</p>
-                    <div class="flex justify-center space-x-3 text-2xl">
-                        <a href="#" class="text-gray-400 hover:text-white transition duration-200" title="GitHub">Gh</a>
-                        <a href="#" class="text-gray-400 hover:text-white transition duration-200" title="Mastodon">M</a>
-                    </div>
-                </div>
-
-                <div class="bg-[#1f2937] p-6 rounded-xl shadow-2xl transition duration-500 hover:shadow-teal-500/50 hover:scale-[1.02]">
-                    <img src="https://placehold.co/150x150/111827/ffffff?text=Audio" alt="Profile of Chloe" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-teal-400">
-                    <h3 class="text-2xl font-semibold text-white text-center">Chloe Davis</h3>
-                    <p class="text-teal-400 text-center mb-4">Audio Engineer</p>
-                    <p class="text-sm text-gray-400 mb-4 text-center">The master of sound, creating immersive soundtracks and effects.</p>
-                    <div class="flex justify-center space-x-3 text-2xl">
-                        <a href="#" class="text-gray-400 hover:text-white transition duration-200" title="SoundCloud">Sc</a>
-                    </div>
-                </div>
-
-                <div class="bg-[#1f2937] p-6 rounded-xl shadow-2xl transition duration-500 hover:shadow-teal-500/50 hover:scale-[1.02]">
-                    <img src="https://placehold.co/150x150/111827/ffffff?text=Mkt" alt="Profile of David" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-blue-500">
-                    <h3 class="text-2xl font-semibold text-white text-center">David Kim</h3>
-                    <p class="text-blue-500 text-center mb-4">Marketing & PR</p>
-                    <p class="text-sm text-gray-400 mb-4 text-center">Handling communication and community engagement for the studio.</p>
-                    <div class="flex justify-center space-x-3 text-2xl">
-                        <a href="#" class="text-gray-400 hover:text-white transition duration-200" title="Twitter/X">X</a>
-                    </div>
-                </div>
+             <div class="flex items-center mb-12">
+                <div class="h-8 w-8 bg-[#34495e] mr-4 border-2 border-white"></div>
+                <h2 class="text-4xl font-bold text-white brand-font">The Sloth Squad</h2>
             </div>
-        </section>
-        
-        <!-- Admin/Pricing Panel -->
-        <section id="admin" class="p-8 bg-[#1f2937] rounded-xl shadow-2xl border border-gray-700">
-            <h2 class="text-4xl font-bold border-b-4 border-red-400 pb-3 mb-8 inline-block">Admin Panel: Set Product Prices</h2>
-            <p class="text-gray-400 mb-6">
-                Use this panel to update the price of any game. The changes are saved in real-time to the database (Firestore) and immediately reflected on the Products page for all users.
-            </p>
 
-            <div id="admin-form-container" class="space-y-4">
-                <!-- Admin forms will be populated here -->
-                <p id="admin-loading" class="text-center text-gray-500">Loading admin controls...</p>
-            </div>
-            
-            <div id="status-message" class="mt-4 p-3 rounded-lg text-sm hidden" role="alert"></div>
-        </section>
-
-        <!-- Modals for Purchase Confirmation -->
-        <div id="purchase-modal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center p-4 z-[100]">
-            <div class="bg-[#1f2937] p-8 rounded-xl max-w-sm w-full shadow-2xl">
-                <h3 class="text-2xl font-bold mb-4 text-teal-400">Purchase Confirmation</h3>
-                <p id="modal-message" class="mb-6 text-white"></p>
-                <div class="flex justify-end space-x-4">
-                    <button onclick="closeModal()" class="py-2 px-4 bg-gray-600 hover:bg-gray-500 text-white rounded-lg transition duration-200">Close</button>
-                    <button onclick="simulatePurchase()" class="py-2 px-4 bg-teal-600 hover:bg-teal-500 text-white font-semibold rounded-lg transition duration-200">Confirm Purchase</button>
-                </div>
-            </div>
-        </div>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-[#161b22] py-6 mt-12 border-t border-gray-700">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-500">
-            <p>&copy; 2024 Stellar Forge Games. All rights reserved.</p>
-        </div>
-    </footer>
-
-
-    <!-- Firebase/Firestore and Game Logic -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot, collection, getDocs, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // Set Firebase Log Level to Debug
-        setLogLevel('Debug');
-
-        // Global variables provided by the environment
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-
-        let db, auth, userId;
-        let isAuthReady = false;
-        
-        // Product data structure simulation (Initial state)
-        const initialProducts = [
-            { id: 'project-solstice', name: 'Project Solstice', description: 'A massive open-world fantasy RPG with dynamic weather and a branching storyline.', imageUrl: 'https://placehold.co/400x225/2563eb/ffffff?text=Project+Solstice', price: 0.00 },
-            { id: 'void-racer', name: 'Void Racer', description: 'Fast-paced, neon-drenched arcade racer set in a retro-futuristic metropolis.', imageUrl: 'https://placehold.co/400x225/ea580c/ffffff?text=Void+Racer', price: 0.00 },
-            { id: 'chronos-puzzle', name: 'Chronos Puzzle', description: 'A mind-bending time-manipulation puzzle game with a minimalist aesthetic.', imageUrl: 'https://placehold.co/400x225/10b981/ffffff?text=Chronos+Puzzle', price: 0.00 },
-        ];
-
-
-        // ----------------------------------------------------
-        // 1. FIREBASE INITIALIZATION AND AUTHENTICATION
-        // ----------------------------------------------------
-
-        async function initializeFirebase() {
-            if (!firebaseConfig) {
-                console.error("Firebase configuration is missing.");
-                document.getElementById('loading-message').innerHTML = '<p class="text-red-500">Error: Firebase configuration not found. Cannot load dynamic product data.</p>';
-                return;
-            }
-
-            try {
-                const app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                auth = getAuth(app);
-
-                // Check for auth state change
-                onAuthStateChanged(auth, (user) => {
-                    if (user) {
-                        userId = user.uid;
-                        isAuthReady = true;
-                        console.log("Firebase Auth Ready. User ID:", userId);
-                        // Once authenticated, start listening to data
-                        setupRealtimeListeners();
-                        // Also ensure initial products exist if this is the first run
-                        ensureInitialProductsExist();
-                    } else {
-                        // User is signed out (should not happen if initialAuthToken is present)
-                        console.log("User signed out. Attempting anonymous sign-in.");
-                        signInAnonymously(auth).catch(err => console.error("Anonymous sign-in failed:", err));
-                    }
-                });
-
-                // Use custom token if provided, otherwise sign in anonymously
-                if (initialAuthToken) {
-                    await signInWithCustomToken(auth, initialAuthToken);
-                } else {
-                    await signInAnonymously(auth);
-                }
-
-            } catch (error) {
-                console.error("Firebase initialization failed:", error);
-                document.getElementById('loading-message').innerHTML = '<p class="text-red-500">Error initializing Firebase.</p>';
-            }
-        }
-
-        // ----------------------------------------------------
-        // 2. DATA MANAGEMENT (Firestore)
-        // ----------------------------------------------------
-
-        function getProductsCollectionRef() {
-            if (!db || !appId) return null;
-            // Public data path: /artifacts/{appId}/public/data/products
-            return collection(db, `artifacts/${appId}/public/data/products`);
-        }
-        
-        function getProductDocRef(productId) {
-            if (!db || !appId) return null;
-            return doc(db, `artifacts/${appId}/public/data/products/${productId}`);
-        }
-
-        /**
-         * Ensures the initial product list is present in Firestore if it doesn't exist.
-         */
-        async function ensureInitialProductsExist() {
-            const productsRef = getProductsCollectionRef();
-            if (!productsRef) return;
-
-            try {
-                const snapshot = await getDocs(productsRef);
-                // If the collection is empty, populate it with mock data
-                if (snapshot.empty) {
-                    console.log("Populating initial product data...");
-                    for (const product of initialProducts) {
-                        // Use setDoc to set the document with the specific product ID
-                        await setDoc(doc(productsRef, product.id), product);
-                    }
-                    displayStatus('Initial products created!', 'success');
-                }
-            } catch (e) {
-                console.error("Error ensuring initial products exist:", e);
-                displayStatus('Error ensuring initial products exist.', 'error');
-            }
-        }
-
-        /**
-         * Sets up real-time listeners for product data.
-         */
-        function setupRealtimeListeners() {
-            const productsRef = getProductsCollectionRef();
-            if (!productsRef) return;
-
-            // Listen for real-time updates to the products collection
-            onSnapshot(productsRef, (snapshot) => {
-                const products = [];
-                snapshot.forEach((doc) => {
-                    products.push({ id: doc.id, ...doc.data() });
-                });
-                
-                // Update both the main product display and the admin panel
-                renderProducts(products);
-                renderAdminForms(products);
-
-                document.getElementById('loading-message').classList.add('hidden');
-                console.log("Products updated in real-time.");
-
-            }, (error) => {
-                console.error("Error listening to products:", error);
-                document.getElementById('loading-message').innerHTML = '<p class="text-red-500">Error loading products.</p>';
-            });
-        }
-        
-        /**
-         * Renders the product cards on the main products page.
-         */
-        function renderProducts(products) {
-            const container = document.getElementById('products-container');
-            container.innerHTML = products.map(product => `
-                <div class="bg-[#1f2937] p-6 rounded-xl shadow-2xl border border-gray-700 transition duration-300 hover:shadow-teal-500/50">
-                    <img src="${product.imageUrl}" alt="${product.name} cover" class="w-full h-auto object-cover rounded-lg mb-4 border border-gray-600">
-                    <h3 class="text-3xl font-bold text-white mb-2">${product.name}</h3>
-                    <p class="text-gray-400 mb-4">${product.description}</p>
-                    <div class="flex items-center justify-between mt-6">
-                        <span class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-teal-400">
-                            $${product.price.toFixed(2)}
-                        </span>
-                        <button 
-                            onclick="showPurchaseModal('${product.id}', '${product.name}', ${product.price})" 
-                            class="py-3 px-6 bg-teal-600 text-white font-bold rounded-lg shadow-lg hover:bg-teal-500 transform hover:scale-[1.05] transition duration-300 active:scale-[0.98]">
-                            Purchase
-                        </button>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Team Member 1 -->
+                <div class="bg-[#212e3b] p-0 border-2 border-[#34495e] hover:border-[#5dade2] transition duration-300 group">
+                    <div class="bg-[#34495e] p-4 text-center">
+                        <img src="https://placehold.co/150x150/1a2530/5dade2?text=Des" alt="Designer" class="w-24 h-24 mx-auto rounded-none border-2 border-white mb-2">
+                        <h3 class="text-xl font-bold text-white brand-font">Alex "Slow"</h3>
+                        <p class="text-[#5dade2] text-sm brand-font">Art Director</p>
+                    </div>
+                    <div class="p-4">
+                        <p class="text-sm text-gray-400 mb-4">Pixel artist extraordinaire. Loves cubes.</p>
+                        <div class="flex justify-center space-x-4 text-[#5dade2]">
+                            <a href="#" class="hover:text-white brand-font">TWITTER</a>
+                        </div>
                     </div>
                 </div>
-            `).join('');
-        }
 
-        /**
-         * Renders the admin forms for price setting.
-         */
-        function renderAdminForms(products) {
-            const container = document.getElementById('admin-form-container');
-            container.innerHTML = products.map(product => `
-                <div class="p-4 bg-[#2f3847] rounded-lg border border-gray-600 flex flex-col md:flex-row justify-between items-center space-y-3 md:space-y-0 md:space-x-4">
-                    <span class="font-semibold text-lg text-white w-full md:w-1/3">${product.name}</span>
-                    <div class="flex items-center space-x-2 w-full md:w-1/3">
-                        <label for="price-${product.id}" class="text-gray-400">$</label>
-                        <input type="number" step="0.01" min="0" 
-                               id="price-${product.id}" 
-                               value="${product.price.toFixed(2)}" 
-                               class="w-full p-2 rounded-lg bg-[#161b22] border border-gray-700 text-white focus:ring-teal-400 focus:border-teal-400">
+                <!-- Team Member 2 -->
+                <div class="bg-[#212e3b] p-0 border-2 border-[#34495e] hover:border-[#5dade2] transition duration-300 group">
+                    <div class="bg-[#34495e] p-4 text-center">
+                        <img src="https://placehold.co/150x150/1a2530/5dade2?text=Dev" alt="Dev" class="w-24 h-24 mx-auto rounded-none border-2 border-white mb-2">
+                        <h3 class="text-xl font-bold text-white brand-font">Sam "Sleepy"</h3>
+                        <p class="text-[#5dade2] text-sm brand-font">Lead Dev</p>
                     </div>
-                    <button 
-                        onclick="updatePrice('${product.id}')" 
-                        class="w-full md:w-auto py-2 px-4 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-500 transition duration-200">
-                        Set New Price
-                    </button>
-                </div>
-            `).join('');
-            document.getElementById('admin-loading').classList.add('hidden');
-        }
-
-
-        /**
-         * Updates the price of a specific product in Firestore.
-         */
-        window.updatePrice = async function(productId) {
-            const inputElement = document.getElementById(`price-${productId}`);
-            let newPrice = parseFloat(inputElement.value);
-
-            if (isNaN(newPrice) || newPrice < 0) {
-                displayStatus('Please enter a valid, non-negative price.', 'error');
-                return;
-            }
-
-            // Round to 2 decimal places and ensure it's a number
-            newPrice = parseFloat(newPrice.toFixed(2));
-            
-            const docRef = getProductDocRef(productId);
-            if (!docRef) {
-                displayStatus('Firestore not initialized.', 'error');
-                return;
-            }
-
-            // Button state change
-            const button = inputElement.nextElementSibling;
-            const originalText = button.textContent;
-            button.textContent = 'Saving...';
-            button.disabled = true;
-
-            try {
-                // Update only the 'price' field
-                await setDoc(docRef, { price: newPrice }, { merge: true });
-                displayStatus(`Price for ${productId} successfully set to $${newPrice.toFixed(2)}.`, 'success');
-            } catch (e) {
-                console.error("Error updating price:", e);
-                displayStatus('Failed to update price in database.', 'error');
-            } finally {
-                button.textContent = originalText;
-                button.disabled = false;
-            }
-        }
-
-
-        // ----------------------------------------------------
-        // 3. UI and Modals
-        // ----------------------------------------------------
-
-        let currentProductId = null;
-        let currentPrice = null;
-
-        window.showPurchaseModal = function(id, name, price) {
-            currentProductId = id;
-            currentPrice = price;
-            const modal = document.getElementById('purchase-modal');
-            const message = document.getElementById('modal-message');
-            
-            message.textContent = `Are you sure you want to purchase "${name}" for $${price.toFixed(2)}? (This is a simulation.)`;
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-
-        window.closeModal = function() {
-            const modal = document.getElementById('purchase-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-            currentProductId = null;
-            currentPrice = null;
-        }
-
-        window.simulatePurchase = function() {
-            if (!currentProductId) return;
-
-            displayStatus(`SUCCESS: You have simulated the purchase of ${currentProductId} for $${currentPrice.toFixed(2)}. Enjoy the game!`, 'success');
-            closeModal();
-        }
-
-        /**
-         * Displays a temporary status message in the admin panel.
-         * @param {string} message The message to display.
-         * @param {'success' | 'error'} type The type of message.
-         */
-        function displayStatus(message, type) {
-            const statusDiv = document.getElementById('status-message');
-            statusDiv.textContent = message;
-            statusDiv.className = 'mt-4 p-3 rounded-lg text-sm'; // Reset classes
-            statusDiv.classList.remove('hidden');
-
-            if (type === 'success') {
-                statusDiv.classList.add('bg-green-700', 'text-white');
-            } else if (type === 'error') {
-                statusDiv.classList.add('bg-red-700', 'text-white');
-            }
-
-            // Hide after 5 seconds
-            setTimeout(() => {
-                statusDiv.classList.add('hidden');
-            }, 5000);
-        }
-
-        // Initialize everything when the window loads
-        initializeFirebase();
-
-    </script>
-</body>
-</html>
+                    <div class="p-4">
+                        <p class="text-sm text-gray-400 mb-4">Writes code faster than a sloth moves (barely).</p>
