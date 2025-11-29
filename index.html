@@ -247,6 +247,27 @@
         </div>
     </footer>
 
+    <!-- Firebase Configuration Variables -->
+    <script>
+        // Your Firebase project configuration
+        // You can get this from your Firebase project settings -> "Your apps" -> "Web" -> "Config"
+        const __firebase_config = JSON.stringify({
+          apiKey: "YOUR_API_KEY", // Replace with your actual API Key
+          authDomain: "slothcubestudios-91949.firebaseapp.com",
+          projectId: "slothcubestudios-91949",
+          storageBucket: "slothcubestudios-91949.appspot.com",
+          messagingSenderId: "784109625000", // Your Project Number
+          appId: "YOUR_APP_ID", // Replace with your actual App ID (e.g., from Firebase Console > Project settings > General)
+          measurementId: "G-YOUR_MEASUREMENT_ID" // If you have Google Analytics configured
+        });
+
+        // If you are using custom authentication tokens, you would generate and place it here.
+        // For anonymous sign-in, this can be null or empty.
+        const __initial_auth_token = null; // Or your custom token string if you have one
+        
+        // This is your Google Analytics Property ID (optional, but good to have)
+        const __app_id = "514601746"; // Your Google Analytics Property ID as the app identifier
+    </script>
 
     <!-- Firebase/Firestore and Game Logic -->
     <script type="module">
@@ -254,17 +275,23 @@
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, onSnapshot, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Global Variables
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        // Global Variables (these now reference the variables declared above)
+        // const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id'; // This line can now be simplified
+        const appId = __app_id; // Simpler now that it's guaranteed to be defined
+
         let firebaseConfig = null;
         try {
-            firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
-        } catch(e) { console.error("Config parse error"); }
+            firebaseConfig = JSON.parse(__firebase_config); // Parse the string here
+        } catch(e) { 
+            console.error("Config parse error:", e); 
+        }
         
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        const initialAuthToken = __initial_auth_token; // Simpler now that it's guaranteed to be defined
 
         let db, auth, userId;
         let usingFallbackMode = false;
+        
+        // ... (rest of your existing JavaScript code)
         
         // --- ADMIN ACCESS CONTROL ---
         const ADMIN_PASSWORD = "slothcube";
