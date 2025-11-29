@@ -1,249 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sloth Cube Studios</title>
+  <meta charset="UTF-8" />
+  <title>SlothCube Admin Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: #0d0d0d;
+      color: #f5f5f5;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
 
-    <script src="https://unpkg.com/@supabase/supabase-js@2.45.1/dist/umd/supabase.min.js"></script>
+    /* SIDEBAR */
+    .sidebar {
+      width: 260px;
+      background: #111;
+      padding: 30px;
+      box-sizing: border-box;
+      border-right: 1px solid #222;
+    }
 
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Inter:wght@300;400;600&display=swap');
+    .sidebar h2 {
+      margin: 0 0 30px;
+      font-size: 22px;
+      color: #BFA87E;
+    }
 
-        :root {
-            --sloth-blue: #5dade2;
-            --sloth-dark: #34495e;
-            --sloth-bg: #1a2530;
-            --sloth-text: #ecf0f1;
-        }
+    .nav a {
+      display: block;
+      padding: 12px 0;
+      color: #ddd;
+      text-decoration: none;
+      font-size: 15px;
+      opacity: 0.8;
+    }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--sloth-bg);
-            color: var(--sloth-text);
-        }
+    .nav a:hover {
+      opacity: 1;
+      color: #fff;
+    }
 
-        h1,
-        h2,
-        h3,
-        .brand-font {
-            font-family: 'Chakra Petch', sans-serif;
-            text-transform: uppercase;
-        }
+    /* MAIN AREA */
+    .main {
+      flex: 1;
+      padding: 30px;
+      overflow-y: auto;
+    }
 
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
+    .header {
+      font-size: 30px;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
 
-        ::-webkit-scrollbar-track {
-            background: #1a2530;
-        }
+    .subheader {
+      opacity: 0.7;
+      margin-bottom: 30px;
+    }
 
-        ::-webkit-scrollbar-thumb {
-            background: #34495e;
-            border-radius: 5px;
-        }
+    /* INPUTS */
+    label {
+      display: block;
+      margin-top: 20px;
+      opacity: 0.8;
+    }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: #5dade2;
-        }
-    </style>
+    input {
+      width: 350px;
+      padding: 10px;
+      margin-top: 6px;
+      border-radius: 6px;
+      border: none;
+      background: #1e1e1e;
+      color: #fff;
+      font-size: 15px;
+    }
+
+    button {
+      margin-top: 25px;
+      padding: 12px 24px;
+      background: #BFA87E;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #000;
+      font-size: 15px;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    #status {
+      margin-top: 20px;
+      opacity: 0.7;
+      font-size: 14px;
+    }
+
+    .card {
+      background: #151515;
+      padding: 25px;
+      border-radius: 12px;
+      border: 1px solid #222;
+      max-width: 600px;
+    }
+  </style>
 </head>
 
-<body class="min-h-screen flex flex-col">
+<body>
 
-    <!-- HEADER -->
-    <header class="sticky top-0 z-50 bg-[#151f28] shadow-lg border-b border-[#34495e]">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 bg-[#5dade2] border-2 border-black rounded-sm relative flex items-center justify-center shadow-[0_0_10px_rgba(93,173,226,0.5)]">
-                    <div class="absolute top-3 left-1 w-3 h-3 bg-[#34495e] rounded-full opacity-80"></div>
-                    <div class="absolute top-3 right-1 w-3 h-3 bg-[#34495e] rounded-full opacity-80"></div>
-                    <div class="absolute bottom-2 w-4 h-2 bg-black rounded-full"></div>
-                </div>
-                <h1 class="text-3xl font-bold text-white tracking-widest brand-font">
-                    SLOTH<span class="text-[#5dade2]">CUBE</span>
-                </h1>
-            </div>
+  <div class="sidebar">
+    <h2>SlothCube Admin</h2>
 
-            <nav class="space-x-8 text-lg hidden md:flex font-semibold brand-font">
-                <a href="#products" class="hover:text-[#5dade2] transition duration-300">Games</a>
-                <a href="#team" class="hover:text-[#5dade2] transition duration-300">The Squad</a>
-                <a href="#" onclick="showPasswordModal(event)" class="hover:text-red-400 transition duration-300">Admin</a>
-            </nav>
-        </div>
-    </header>
-
-    <!-- MAIN -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-grow">
-
-        <!-- HERO -->
-        <section id="hero" class="text-center mb-24 pt-8">
-            <h2 class="text-5xl md:text-7xl font-bold mb-6 text-white brand-font">
-                Slow Down. <br /><span class="text-[#5dade2]">Play Hard.</span>
-            </h2>
-            <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-8 font-light">
-                We build blocky worlds and chill experiences. Welcome to the cube.
-            </p>
-            <a href="#products" class="inline-block bg-[#5dade2] text-[#1a2530] font-bold py-3 px-8 rounded-none border-2 border-[#5dade2] hover:bg-transparent hover:text-[#5dade2] transition duration-300 brand-font text-xl shadow-[4px_4px_0px_#34495e] hover:shadow-[2px_2px_0px_#34495e] hover:translate-x-[2px] hover:translate-y-[2px]">
-                Browse Games
-            </a>
-        </section>
-
-        <!-- GAMES -->
-        <section id="products" class="mb-24">
-            <div class="flex items-center mb-12">
-                <div class="h-8 w-8 bg-[#5dade2] mr-4 border-2 border-black"></div>
-                <h2 class="text-4xl font-bold text-white brand-font">Our Games</h2>
-            </div>
-
-            <div id="loading-container" class="text-center py-12">
-                <p class="text-xl text-gray-500 brand-font">Loading pixels...</p>
-                <div class="animate-spin h-10 w-10 border-4 border-[#34495e] border-t-[#5dade2] rounded-full mx-auto mt-4"></div>
-            </div>
-
-            <div id="products-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 hidden"></div>
-        </section>
-
-        <!-- ADMIN PANEL -->
-        <section id="admin" class="p-8 bg-[#212e3b] border-2 border-[#34495e] mb-12 hidden">
-            <h2 class="text-3xl font-bold text-[#5dade2] mb-6 brand-font">Admin Panel</h2>
-
-            <div id="admin-loading" class="text-gray-400">Connecting to Supabase...</div>
-
-            <div id="admin-form-container" class="space-y-4 hidden"></div>
-
-            <div id="status-message" class="hidden mt-4 p-3 border-l-4"></div>
-        </section>
-    </main>
-
-    <!-- PASSWORD MODAL -->
-    <div id="password-modal"
-        class="fixed inset-0 bg-black bg-opacity-90 hidden items-center justify-center p-4 z-[101] backdrop-blur-sm">
-        <div class="bg-[#1a2530] p-8 border-2 border-red-400 max-w-sm w-full shadow-[0_0_50px_rgba(255,100,100,0.2)]">
-            <h3 class="text-2xl font-bold mb-4 text-red-400 brand-font uppercase">Admin Access</h3>
-            <p class="mb-4 text-white font-light">Enter the admin password</p>
-            <input type="password" id="admin-password-input" placeholder="Password: slothcube"
-                class="w-full p-3 mb-6 bg-[#151f28] border border-[#34495e] text-white focus:border-red-400 focus:outline-none brand-font">
-
-            <div class="flex justify-end space-x-4">
-                <button onclick="closeModal()" class="py-2 px-6 border border-gray-600 text-gray-400 brand-font">
-                    Cancel
-                </button>
-                <button onclick="verifyPassword()" class="py-2 px-6 bg-red-500 text-white brand-font">
-                    Enter
-                </button>
-            </div>
-        </div>
+    <div class="nav">
+      <a href="#">Dashboard</a>
+      <a href="#">Manage Games</a>
+      <a href="#">Users</a>
+      <a href="#">Settings</a>
     </div>
+  </div>
 
-    <!-- SCRIPT -->
-    <script>
-        // --- SUPABASE SETUP ---
-        const supabase = window.supabase.createClient(
-            "https://ufymmulksqsxpzfqbmys.supabase.co",
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVmeW1tdWxrc3FzeHB6ZnFibXlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzNzYwMDksImV4cCI6MjA3OTk1MjAwOX0.De22E039H6XhYy2PwmmgrSrSHAVuUmkuFiIM0I_RA-A"
-        );
+  <div class="main">
+    <div class="header">Game Editor</div>
+    <div class="subheader">Manage game data stored in Supabase</div>
 
-        // Load games
-        async function loadGames() {
-            const container = document.getElementById("products-container");
-            const loading = document.getElementById("loading-container");
+    <div class="card">
 
-            let { data, error } = await supabase.from("games").select("*");
+      <label>Game ID</label>
+      <input id="gameId" placeholder="whispers" />
 
-            loading.classList.add("hidden");
-            container.classList.remove("hidden");
+      <label>Game Title</label>
+      <input id="title" placeholder="Whispers in the Dark" />
 
-            if (error) {
-                container.innerHTML = `<p class='text-red-400'>Error loading games.</p>`;
-                return;
-            }
+      <label>Price (£)</label>
+      <input id="price" type="number" step="0.01" placeholder="9.99" />
 
-            container.innerHTML = "";
+      <button onclick="loadGame()">Load Game</button>
+      <button onclick="saveGame()">Save Game</button>
 
-            data.forEach(game => {
-                container.innerHTML += `
-                    <div class="bg-[#212e3b] border-2 border-[#34495e] p-4">
-                        <h3 class="text-xl font-bold mb-2 brand-font text-[#5dade2]">${game.title}</h3>
-                        <p class="text-gray-300 mb-3">${game.description}</p>
-                        <p class="text-white brand-font">£${game.price}</p>
-                    </div>
-                `;
-            });
+      <div id="status">Waiting...</div>
+    </div>
+  </div>
+
+  <!-- FIXED JS (Wrapped in DOMContentLoaded so Supabase loads correctly) -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      console.log("Page loaded. Initialising Supabase...");
+
+      const supabase = window.supabase.createClient(
+        "https://ufymmulksqsxpzfqbmys.supabase.co",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVmeW1tdWxrc3FzeHB6ZnFibXlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzNzYwMDksImV4cCI6MjA3OTk1MjAwOX0.De22E039H6XhYy2PwmmgrSrSHAVuUmkuFiIM0I_RA-A"
+      );
+
+      console.log("Supabase initialised.");
+
+      // === LOAD GAME ===
+      window.loadGame = async function () {
+        const id = document.getElementById("gameId").value;
+        document.getElementById("status").innerText = "Loading...";
+
+        const { data, error } = await supabase
+          .from("games")
+          .select("*")
+          .eq("id", id)
+          .single();
+
+        if (error || !data) {
+          document.getElementById("status").innerText = "Game not found.";
+          return;
         }
 
-        loadGames();
+        document.getElementById("title").value = data.title;
+        document.getElementById("price").value = data.price;
 
-        // Password
-        function showPasswordModal(e) {
-            e.preventDefault();
-            document.getElementById("password-modal").classList.remove("hidden");
+        document.getElementById("status").innerText = "Loaded!";
+      };
+
+      // === SAVE GAME ===
+      window.saveGame = async function () {
+        const id = document.getElementById("gameId").value;
+        const title = document.getElementById("title").value;
+        const price = parseFloat(document.getElementById("price").value);
+
+        document.getElementById("status").innerText = "Saving...";
+
+        const { error } = await supabase
+          .from("games")
+          .upsert({ id, title, price });
+
+        if (error) {
+          document.getElementById("status").innerText = "Error saving game!";
+          return;
         }
 
-        function closeModal() {
-            document.getElementById("password-modal").classList.add("hidden");
-        }
-
-        function verifyPassword() {
-            const value = document.getElementById("admin-password-input").value;
-            if (value === "slothcube") {
-                closeModal();
-                enableAdmin();
-            }
-        }
-
-        // Admin
-        async function enableAdmin() {
-            document.getElementById("admin").classList.remove("hidden");
-
-            const formArea = document.getElementById("admin-form-container");
-            const loading = document.getElementById("admin-loading");
-
-            let { data, error } = await supabase.from("games").select("*");
-
-            loading.classList.add("hidden");
-            formArea.classList.remove("hidden");
-
-            formArea.innerHTML = "";
-
-            data.forEach(game => {
-                formArea.innerHTML += `
-                    <div class="p-4 bg-[#151f28] border border-[#34495e]">
-                        <h3 class="text-xl brand-font text-[#5dade2]">${game.title}</h3>
-                        <input id="price-${game.id}" type="number" value="${game.price}" class="mt-2 p-2 w-full bg-[#212e3b] border border-[#34495e] text-white">
-                        <button onclick="updatePrice(${game.id})"
-                            class="mt-2 bg-[#5dade2] text-black px-4 py-2 brand-font">Save</button>
-                    </div>
-                `;
-            });
-        }
-
-        async function updatePrice(id) {
-            const price = document.getElementById(`price-${id}`).value;
-
-            let { error } = await supabase
-                .from("games")
-                .update({ price })
-                .eq("id", id);
-
-            const msg = document.getElementById("status-message");
-            msg.classList.remove("hidden");
-
-            if (error) {
-                msg.innerHTML = "❌ Error updating price";
-                msg.classList.add("border-red-400");
-                msg.classList.remove("border-green-400");
-            } else {
-                msg.innerHTML = "✅ Price updated!";
-                msg.classList.add("border-green-400");
-                msg.classList.remove("border-red-400");
-            }
-        }
-    </script>
+        document.getElementById("status").innerText = "Saved!";
+      };
+    });
+  </script>
 
 </body>
 </html>
