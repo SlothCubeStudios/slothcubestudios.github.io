@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sloth Cube Studios</title>
-    <!-- Load Tailwind CSS -->
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Fonts: Chakra Petch for headers, Inter for body -->
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2.45.1/dist/umd/supabase.min.js"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Inter:wght@300;400;600&display=swap');
-        
+
         :root {
             --sloth-blue: #5dade2;
             --sloth-dark: #34495e;
@@ -23,25 +26,39 @@
             color: var(--sloth-text);
         }
 
-        h1, h2, h3, .brand-font {
+        h1,
+        h2,
+        h3,
+        .brand-font {
             font-family: 'Chakra Petch', sans-serif;
             text-transform: uppercase;
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: #1a2530; }
-        ::-webkit-scrollbar-thumb { background: #34495e; border-radius: 5px; }
-        ::-webkit-scrollbar-thumb:hover { background: #5dade2; }
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a2530;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #34495e;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5dade2;
+        }
     </style>
 </head>
+
 <body class="min-h-screen flex flex-col">
 
-    <!-- Header -->
+    <!-- HEADER -->
     <header class="sticky top-0 z-50 bg-[#151f28] shadow-lg border-b border-[#34495e]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-3">
-                <!-- Sloth Cube Logo -->
                 <div class="w-10 h-10 bg-[#5dade2] border-2 border-black rounded-sm relative flex items-center justify-center shadow-[0_0_10px_rgba(93,173,226,0.5)]">
                     <div class="absolute top-3 left-1 w-3 h-3 bg-[#34495e] rounded-full opacity-80"></div>
                     <div class="absolute top-3 right-1 w-3 h-3 bg-[#34495e] rounded-full opacity-80"></div>
@@ -55,19 +72,18 @@
             <nav class="space-x-8 text-lg hidden md:flex font-semibold brand-font">
                 <a href="#products" class="hover:text-[#5dade2] transition duration-300">Games</a>
                 <a href="#team" class="hover:text-[#5dade2] transition duration-300">The Squad</a>
-                <!-- Updated Admin link to call the password function -->
                 <a href="#" onclick="showPasswordModal(event)" class="hover:text-red-400 transition duration-300">Admin</a>
             </nav>
         </div>
     </header>
 
-    <!-- Main Content -->
+    <!-- MAIN -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-grow">
 
-        <!-- Hero -->
+        <!-- HERO -->
         <section id="hero" class="text-center mb-24 pt-8">
             <h2 class="text-5xl md:text-7xl font-bold mb-6 text-white brand-font">
-                Slow Down. <br/><span class="text-[#5dade2]">Play Hard.</span>
+                Slow Down. <br /><span class="text-[#5dade2]">Play Hard.</span>
             </h2>
             <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-8 font-light">
                 We build blocky worlds and chill experiences. Welcome to the cube.
@@ -77,547 +93,157 @@
             </a>
         </section>
 
-        <!-- Products -->
+        <!-- GAMES -->
         <section id="products" class="mb-24">
             <div class="flex items-center mb-12">
                 <div class="h-8 w-8 bg-[#5dade2] mr-4 border-2 border-black"></div>
                 <h2 class="text-4xl font-bold text-white brand-font">Our Games</h2>
             </div>
 
-            <!-- Loader / Fallback Message -->
             <div id="loading-container" class="text-center py-12">
                 <p class="text-xl text-gray-500 brand-font">Loading pixels...</p>
                 <div class="animate-spin h-10 w-10 border-4 border-[#34495e] border-t-[#5dade2] rounded-full mx-auto mt-4"></div>
             </div>
 
-            <!-- Products Grid -->
-            <div id="products-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 hidden">
-                <!-- Injected via JS -->
-            </div>
+            <div id="products-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 hidden"></div>
         </section>
 
-        <!-- Team -->
-        <section id="team" class="mb-24">
-             <div class="flex items-center mb-12">
-                <div class="h-8 w-8 bg-[#34495e] mr-4 border-2 border-white"></div>
-                <h2 class="text-4xl font-bold text-white brand-font">The Sloth Squad</h2>
-            </div>
+        <!-- ADMIN PANEL -->
+        <section id="admin" class="p-8 bg-[#212e3b] border-2 border-[#34495e] mb-12 hidden">
+            <h2 class="text-3xl font-bold text-[#5dade2] mb-6 brand-font">Admin Panel</h2>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Team Member 1 -->
-                <div class="bg-[#212e3b] p-0 border-2 border-[#34495e] hover:border-[#5dade2] transition duration-300 group">
-                    <div class="bg-[#34495e] p-4 text-center">
-                        <img src="https://placehold.co/150x150/1a2530/5dade2?text=Des" alt="Designer" class="w-24 h-24 mx-auto rounded-none border-2 border-white mb-2">
-                        <h3 class="text-xl font-bold text-white brand-font">Alex "Slow"</h3>
-                        <p class="text-[#5dade2] text-sm brand-font">Art Director</p>
-                    </div>
-                    <div class="p-4">
-                        <p class="text-sm text-gray-400 mb-4">Pixel artist extraordinaire. Loves cubes.</p>
-                        <div class="flex justify-center space-x-4 text-[#5dade2]">
-                            <a href="#" class="hover:text-white brand-font">TWITTER</a>
-                        </div>
-                    </div>
-                </div>
+            <div id="admin-loading" class="text-gray-400">Connecting to Supabase...</div>
 
-                <!-- Team Member 2 -->
-                <div class="bg-[#212e3b] p-0 border-2 border-[#34495e] hover:border-[#5dade2] transition duration-300 group">
-                    <div class="bg-[#34495e] p-4 text-center">
-                        <img src="https://placehold.co/150x150/1a2530/5dade2?text=Dev" alt="Dev" class="w-24 h-24 mx-auto rounded-none border-2 border-white mb-2">
-                        <h3 class="text-xl font-bold text-white brand-font">Sam "Sleepy"</h3>
-                        <p class="text-[#5dade2] text-sm brand-font">Lead Dev</p>
-                    </div>
-                    <div class="p-4">
-                        <p class="text-sm text-gray-400 mb-4">Writes code faster than a sloth moves (barely).</p>
-                        <div class="flex justify-center space-x-4 text-[#5dade2]">
-                            <a href="#" class="hover:text-white brand-font">GITHUB</a>
-                        </div>
-                    </div>
-                </div>
+            <div id="admin-form-container" class="space-y-4 hidden"></div>
 
-                <!-- Team Member 3 -->
-                <div class="bg-[#212e3b] p-0 border-2 border-[#34495e] hover:border-[#5dade2] transition duration-300 group">
-                    <div class="bg-[#34495e] p-4 text-center">
-                        <img src="https://placehold.co/150x150/1a2530/5dade2?text=Sfx" alt="Audio" class="w-24 h-24 mx-auto rounded-none border-2 border-white mb-2">
-                        <h3 class="text-xl font-bold text-white brand-font">Jo "Chill"</h3>
-                        <p class="text-[#5dade2] text-sm brand-font">Audio</p>
-                    </div>
-                    <div class="p-4">
-                        <p class="text-sm text-gray-400 mb-4">Lo-fi beats to code/relax to.</p>
-                        <div class="flex justify-center space-x-4 text-[#5dade2]">
-                            <a href="#" class="hover:text-white brand-font">SOUNDCLOUD</a>
-                        </div>
-                    </div>
-                </div>
-                
-                 <!-- Team Member 4 -->
-                <div class="bg-[#212e3b] p-0 border-2 border-[#34495e] hover:border-[#5dade2] transition duration-300 group">
-                    <div class="bg-[#34495e] p-4 text-center">
-                        <img src="https://placehold.co/150x150/1a2530/5dade2?text=Mkt" alt="Marketing" class="w-24 h-24 mx-auto rounded-none border-2 border-white mb-2">
-                        <h3 class="text-xl font-bold text-white brand-font">Max "Hype"</h3>
-                        <p class="text-[#5dade2] text-sm brand-font">Community</p>
-                    </div>
-                    <div class="p-4">
-                        <p class="text-sm text-gray-400 mb-4">Spreading the word, one pixel at a time.</p>
-                        <div class="flex justify-center space-x-4 text-[#5dade2]">
-                            <a href="#" class="hover:text-white brand-font">DISCORD</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div id="status-message" class="hidden mt-4 p-3 border-l-4"></div>
         </section>
-        
-        <!-- Admin/Pricing Panel with Diagnostics (Hidden by default) -->
-        <section id="admin" class="p-8 bg-[#212e3b] border-2 border-[#34495e] relative overflow-hidden mb-12 hidden">
-            <div class="absolute top-0 right-0 p-4 opacity-10 font-bold text-9xl text-white pointer-events-none brand-font select-none">ADMIN</div>
-            
-            <div class="flex justify-between items-center border-b border-[#34495e] pb-4 mb-8">
-                <div>
-                    <h2 class="text-3xl font-bold text-[#5dade2] mb-2 brand-font">Product Control</h2>
-                    <p class="text-gray-400">Adjust game pricing. Updates are live (if permissions allow).</p>
-                </div>
-                <!-- Connection Status Indicator -->
-                <div id="connection-status" class="flex items-center space-x-2 bg-[#1a2530] px-4 py-2 rounded border border-[#34495e]">
-                    <span class="relative flex h-3 w-3">
-                      <span id="status-ping" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
-                      <span id="status-dot" class="relative inline-flex rounded-full h-3 w-3 bg-yellow-500"></span>
-                    </span>
-                    <span id="status-text" class="text-xs font-mono text-yellow-500">Connecting...</span>
-                </div>
-            </div>
-
-            <!-- Status and Error Logs -->
-            <p id="admin-loading" class="text-center text-gray-500 mb-4">Connecting to database...</p>
-            
-            <div id="admin-form-container" class="space-y-4 relative z-10">
-                <!-- Forms Injected Here -->
-            </div>
-            
-            <!-- Error Log Display -->
-            <div id="error-log" class="mt-4 p-3 bg-red-900/30 border border-red-500 text-red-200 text-xs font-mono hidden"></div>
-
-            <div id="status-message" class="mt-4 p-3 border-l-4 text-sm hidden brand-font" role="alert"></div>
-        </section>
-
-        <!-- MODAL CONTAINER (Used for Purchase, Password, and Messages) -->
-        
-        <!-- 1. Password Modal -->
-        <div id="password-modal" class="fixed inset-0 bg-black bg-opacity-90 hidden items-center justify-center p-4 z-[101] backdrop-blur-sm">
-            <div class="bg-[#1a2530] p-8 border-2 border-red-400 max-w-sm w-full shadow-[0_0_50px_rgba(255,100,100,0.2)]">
-                <h3 class="text-2xl font-bold mb-4 text-red-400 brand-font uppercase">Admin Access</h3>
-                <p class="mb-4 text-white font-light">Enter the admin password to unlock write access.</p>
-                <input type="password" id="admin-password-input" placeholder="Password: slothcube" class="w-full p-3 mb-6 bg-[#151f28] border border-[#34495e] text-white focus:border-red-400 focus:outline-none brand-font">
-                <div class="flex justify-end space-x-4">
-                    <button onclick="closeModal('password-modal')" class="py-2 px-6 border border-gray-600 text-gray-400 hover:text-white hover:border-white transition duration-200 brand-font uppercase">Cancel</button>
-                    <button onclick="handlePasswordSubmit()" class="py-2 px-6 bg-red-500 text-[#1a2530] font-bold hover:bg-white transition duration-200 brand-font uppercase shadow-[4px_4px_0px_#000]">Unlock</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 2. Purchase Modal (General Confirmation) -->
-        <div id="purchase-modal" class="fixed inset-0 bg-black bg-opacity-90 hidden items-center justify-center p-4 z-[100] backdrop-blur-sm">
-            <div class="bg-[#1a2530] p-8 border-2 border-[#5dade2] max-w-sm w-full shadow-[0_0_50px_rgba(93,173,226,0.2)]">
-                <h3 class="text-2xl font-bold mb-4 text-[#5dade2] brand-font uppercase">Confirm Purchase</h3>
-                <p id="modal-message" class="mb-8 text-white font-light"></p>
-                <div class="flex justify-end space-x-4">
-                    <button onclick="closeModal('purchase-modal')" class="py-2 px-6 border border-gray-600 text-gray-400 hover:text-white hover:border-white transition duration-200 brand-font uppercase">Cancel</button>
-                    <button onclick="simulatePurchase()" class="py-2 px-6 bg-[#5dade2] text-[#1a2530] font-bold hover:bg-white transition duration-200 brand-font uppercase shadow-[4px_4px_0px_#000]">Buy Now</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 3. Message/Alert Modal (For generic success/errors like incorrect password) -->
-        <div id="message-modal" class="fixed inset-0 bg-black bg-opacity-90 hidden items-center justify-center p-4 z-[102] backdrop-blur-sm">
-            <div class="bg-[#1a2530] p-8 border-2 max-w-sm w-full" id="message-modal-content">
-                <h3 id="msg-title" class="text-2xl font-bold mb-4 brand-font uppercase"></h3>
-                <p id="msg-text" class="mb-8 text-white font-light"></p>
-                <div class="flex justify-end">
-                    <button onclick="closeModal('message-modal')" class="py-2 px-6 bg-[#5dade2] text-[#1a2530] font-bold hover:bg-white transition duration-200 brand-font uppercase">OK</button>
-                </div>
-            </div>
-        </div>
-
-
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-[#151f28] py-8 border-t border-[#34495e]">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <h2 class="text-2xl font-bold text-white brand-font mb-2">SLOTH<span class="text-[#5dade2]">CUBE</span> STUDIOS</h2>
-            <p class="text-gray-500 text-sm">&copy; 2025. Stay Square.</p>
+    <!-- PASSWORD MODAL -->
+    <div id="password-modal"
+        class="fixed inset-0 bg-black bg-opacity-90 hidden items-center justify-center p-4 z-[101] backdrop-blur-sm">
+        <div class="bg-[#1a2530] p-8 border-2 border-red-400 max-w-sm w-full shadow-[0_0_50px_rgba(255,100,100,0.2)]">
+            <h3 class="text-2xl font-bold mb-4 text-red-400 brand-font uppercase">Admin Access</h3>
+            <p class="mb-4 text-white font-light">Enter the admin password</p>
+            <input type="password" id="admin-password-input" placeholder="Password: slothcube"
+                class="w-full p-3 mb-6 bg-[#151f28] border border-[#34495e] text-white focus:border-red-400 focus:outline-none brand-font">
+
+            <div class="flex justify-end space-x-4">
+                <button onclick="closeModal()" class="py-2 px-6 border border-gray-600 text-gray-400 brand-font">
+                    Cancel
+                </button>
+                <button onclick="verifyPassword()" class="py-2 px-6 bg-red-500 text-white brand-font">
+                    Enter
+                </button>
+            </div>
         </div>
-    </footer>
+    </div>
 
-    <!-- Firebase Configuration Variables -->
+    <!-- SCRIPT -->
     <script>
-        // Your Firebase project configuration
-        // You can get this from your Firebase project settings -> "Your apps" -> "Web" -> "Config"
-        const __firebase_config = JSON.stringify({
-          apiKey: "AIzaSyChOTI4h29sLT6qmcO4P-LkCKZQjxoR3jY",
-          authDomain: "slothcubestudios-91949.firebaseapp.com",
-          projectId: "slothcubestudios-91949",
-          storageBucket: "slothcubestudios-91949.firebasestorage.app",
-          messagingSenderId: "784109625000",
-          appId: "1:784109625000:web:b9ac5298ad054785cdec9d",
-          measurementId: "G-GK4VMKHFL0"/ If you have Google Analytics configured
-        });
+        // --- SUPABASE SETUP ---
+        const supabase = window.supabase.createClient(
+            "https://ufymmulksqsxpzfqbmys.supabase.co",
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVmeW1tdWxrc3FzeHB6ZnFibXlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzNzYwMDksImV4cCI6MjA3OTk1MjAwOX0.De22E039H6XhYy2PwmmgrSrSHAVuUmkuFiIM0I_RA-A"
+        );
 
-        // If you are using custom authentication tokens, you would generate and place it here.
-        // For anonymous sign-in, this can be null or empty.
-        const __initial_auth_token = null; // Or your custom token string if you have one
-        
-        // This is your Google Analytics Property ID (optional, but good to have)
-        const __app_id = "514601746"; // Your Google Analytics Property ID as the app identifier
-    </script>
+        // Load games
+        async function loadGames() {
+            const container = document.getElementById("products-container");
+            const loading = document.getElementById("loading-container");
 
-    <!-- Firebase/Firestore and Game Logic -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+            let { data, error } = await supabase.from("games").select("*");
 
-        // Global Variables (these now reference the variables declared above)
-        // const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id'; // This line can now be simplified
-        const appId = __app_id; // Simpler now that it's guaranteed to be defined
+            loading.classList.add("hidden");
+            container.classList.remove("hidden");
 
-        let firebaseConfig = null;
-        try {
-            firebaseConfig = JSON.parse(__firebase_config); // Parse the string here
-        } catch(e) { 
-            console.error("Config parse error:", e); 
-        }
-        
-        const initialAuthToken = __initial_auth_token; // Simpler now that it's guaranteed to be defined
-
-        let db, auth, userId;
-        let usingFallbackMode = false;
-        
-        // ... (rest of your existing JavaScript code)
-        
-        // --- ADMIN ACCESS CONTROL ---
-        const ADMIN_PASSWORD = "slothcube";
-        let isAdminLoggedIn = false; // Internal flag to bypass client-side read-only UI if password is correct
-        
-        window.showPasswordModal = function(event) {
-            event.preventDefault();
-            // If already logged in, just scroll to admin section
-            if (isAdminLoggedIn) {
-                 document.getElementById('admin').classList.remove('hidden');
-                 document.getElementById('admin').scrollIntoView({ behavior: 'smooth' });
-                 return;
-            }
-            const modal = document.getElementById('password-modal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            document.getElementById('admin-password-input').focus();
-        }
-
-        window.handlePasswordSubmit = function() {
-            const passwordInput = document.getElementById('admin-password-input');
-            const password = passwordInput.value;
-            passwordInput.value = ''; // Clear input immediately
-            closeModal('password-modal');
-
-            if (password === ADMIN_PASSWORD) {
-                isAdminLoggedIn = true;
-                document.getElementById('admin').classList.remove('hidden');
-                document.getElementById('admin').scrollIntoView({ behavior: 'smooth' });
-                showToastMessage('Admin Unlocked', 'Welcome back, SlothCube Admin.', 'success');
-                // Re-render admin forms to potentially enable buttons if we are only in fallback mode 
-                // due to initial lack of data, and not a definitive permission error.
-                if (db) { 
-                    // This call will force the buttons to re-evaluate their state based on isAdminLoggedIn
-                    setupRealtimeListeners();
-                } else {
-                    renderAdminForms(initialProducts);
-                }
-            } else {
-                showToastMessage('Access Denied', 'Incorrect password. Access is restricted.', 'error');
-            }
-        }
-        
-        // Initial Data (Used for seeding AND fallback)
-        const initialProducts = [
-            { id: 'cube-quest', name: 'Cube Quest', description: 'Explore an infinite procedural dungeon made entirely of 1x1 blocks.', imageUrl: 'https://placehold.co/400x225/5dade2/1a2530?text=Cube+Quest', price: 14.99 },
-            { id: 'lazy-kart', name: 'Lazy Kart', description: 'The slowest racing game ever made. Strategy over speed.', imageUrl: 'https://placehold.co/400x225/34495e/ffffff?text=Lazy+Kart', price: 9.99 },
-            { id: 'pixel-punch', name: 'Pixel Punch', description: 'A retro brawler with physics-based combat.', imageUrl: 'https://placehold.co/400x225/ffffff/1a2530?text=Pixel+Punch', price: 4.99 },
-        ];
-
-        // --- Status Updates UI ---
-        function updateStatus(state, msg) {
-            const dot = document.getElementById('status-dot');
-            const ping = document.getElementById('status-ping');
-            const text = document.getElementById('status-text');
-            const log = document.getElementById('error-log');
-            const loader = document.getElementById('admin-loading');
-
-            if (state === 'success') {
-                dot.className = "relative inline-flex rounded-full h-3 w-3 bg-green-500";
-                ping.className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75";
-                text.className = "text-xs font-mono text-green-500";
-                text.textContent = "DB CONNECTED";
-                if(loader) loader.classList.add('hidden');
-            } else if (state === 'error') {
-                dot.className = "relative inline-flex rounded-full h-3 w-3 bg-red-500";
-                ping.className = "hidden";
-                text.className = "text-xs font-mono text-red-500";
-                text.textContent = "OFFLINE MODE (READ-ONLY)"; 
-                
-                log.textContent = "Database Error: " + msg;
-                log.classList.remove('hidden');
-                
-                if(loader) loader.classList.add('hidden');
-
-                // Activate Fallback if not already active
-                if (!usingFallbackMode) {
-                    usingFallbackMode = true;
-                    console.log("Activating fallback mode...");
-                    renderProducts(initialProducts);
-                    renderAdminForms(initialProducts); 
-                    document.getElementById('loading-container').classList.add('hidden');
-                    document.getElementById('products-container').classList.remove('hidden');
-                }
-            } else {
-                // Loading
-                text.textContent = "CONNECTING...";
-            }
-        }
-
-        async function initializeFirebase() {
-            if (!firebaseConfig) {
-                updateStatus('error', "No Firebase Configuration Found. Using offline mode.");
+            if (error) {
+                container.innerHTML = `<p class='text-red-400'>Error loading games.</p>`;
                 return;
             }
 
-            try {
-                const app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                auth = getAuth(app);
+            container.innerHTML = "";
 
-                onAuthStateChanged(auth, (user) => {
-                    if (user) {
-                        userId = user.uid;
-                        // Start listeners
-                        setupRealtimeListeners();
-                        // Seed data if needed
-                        ensureInitialProductsExist();
-                    } else {
-                         console.log("User logged out or not auth yet. Attempting sign in...");
-                    }
-                });
-
-                // Auth Logic: Custom Token -> Anonymous
-                if (initialAuthToken) {
-                    await signInWithCustomToken(auth, initialAuthToken).catch(async (e) => {
-                        console.warn("Custom token failed, trying anon:", e);
-                        await signInAnonymously(auth);
-                    });
-                } else {
-                    await signInAnonymously(auth);
-                }
-
-            } catch (error) {
-                console.error("Init failed:", error);
-                updateStatus('error', error.message);
-            }
-        }
-
-        function getProductsCollectionRef() {
-            if(!db) return null;
-            return collection(db, `artifacts/${appId}/public/data/products`);
-        }
-        
-        function getProductDocRef(productId) {
-            if(!db) return null;
-            return doc(db, `artifacts/${appId}/public/data/products/${productId}`);
-        }
-
-        async function ensureInitialProductsExist() {
-            if(usingFallbackMode) return;
-            const productsRef = getProductsCollectionRef();
-            if (!productsRef) return;
-
-            try {
-                const snapshot = await getDocs(productsRef);
-                if (snapshot.empty) {
-                    for (const product of initialProducts) {
-                        // Using setDoc to prevent unnecessary re-seeds on every load
-                        await setDoc(doc(productsRef, product.id), product);
-                    }
-                }
-            } catch (e) {
-                console.error("Seeding/Initial Check error:", e);
-            }
-        }
-
-        function setupRealtimeListeners() {
-            const productsRef = getProductsCollectionRef();
-            if (!productsRef) return;
-
-            // This listener must be set up regardless of auth status to listen for public data
-            onSnapshot(productsRef, (snapshot) => {
-                updateStatus('success');
-                const products = [];
-                snapshot.forEach((doc) => {
-                    products.push({ id: doc.id, ...doc.data() });
-                });
-                
-                const dataToShow = products.length > 0 ? products : initialProducts;
-
-                renderProducts(dataToShow);
-                renderAdminForms(dataToShow);
-
-                document.getElementById('loading-container').classList.add('hidden');
-                document.getElementById('products-container').classList.remove('hidden');
-
-            }, (error) => {
-                console.error("Snapshot error:", error);
-                updateStatus('error', error.message);
+            data.forEach(game => {
+                container.innerHTML += `
+                    <div class="bg-[#212e3b] border-2 border-[#34495e] p-4">
+                        <h3 class="text-xl font-bold mb-2 brand-font text-[#5dade2]">${game.title}</h3>
+                        <p class="text-gray-300 mb-3">${game.description}</p>
+                        <p class="text-white brand-font">£${game.price}</p>
+                    </div>
+                `;
             });
         }
-        
-        function renderProducts(products) {
-            const container = document.getElementById('products-container');
-            container.innerHTML = products.map(product => `
-                <div class="bg-[#212e3b] border-2 border-[#34495e] p-4 relative group hover:-translate-y-1 hover:border-[#5dade2] transition duration-300">
-                    <div class="absolute top-0 right-0 bg-[#5dade2] text-[#1a2530] font-bold px-3 py-1 brand-font text-lg z-10 shadow-md">
-                        $${Number(product.price).toFixed(2)}
+
+        loadGames();
+
+        // Password
+        function showPasswordModal(e) {
+            e.preventDefault();
+            document.getElementById("password-modal").classList.remove("hidden");
+        }
+
+        function closeModal() {
+            document.getElementById("password-modal").classList.add("hidden");
+        }
+
+        function verifyPassword() {
+            const value = document.getElementById("admin-password-input").value;
+            if (value === "slothcube") {
+                closeModal();
+                enableAdmin();
+            }
+        }
+
+        // Admin
+        async function enableAdmin() {
+            document.getElementById("admin").classList.remove("hidden");
+
+            const formArea = document.getElementById("admin-form-container");
+            const loading = document.getElementById("admin-loading");
+
+            let { data, error } = await supabase.from("games").select("*");
+
+            loading.classList.add("hidden");
+            formArea.classList.remove("hidden");
+
+            formArea.innerHTML = "";
+
+            data.forEach(game => {
+                formArea.innerHTML += `
+                    <div class="p-4 bg-[#151f28] border border-[#34495e]">
+                        <h3 class="text-xl brand-font text-[#5dade2]">${game.title}</h3>
+                        <input id="price-${game.id}" type="number" value="${game.price}" class="mt-2 p-2 w-full bg-[#212e3b] border border-[#34495e] text-white">
+                        <button onclick="updatePrice(${game.id})"
+                            class="mt-2 bg-[#5dade2] text-black px-4 py-2 brand-font">Save</button>
                     </div>
-                    <div class="overflow-hidden border border-[#34495e] mb-4">
-                        <img src="${product.imageUrl}" alt="${product.name}" class="w-full h-auto object-cover transform group-hover:scale-110 transition duration-500">
-                    </div>
-                    <h3 class="text-2xl font-bold text-white mb-2 brand-font uppercase">${product.name}</h3>
-                    <p class="text-gray-400 mb-6 font-light text-sm h-12">${product.description}</p>
-                    <button 
-                        onclick="showPurchaseModal('${product.id}', '${product.name}', ${product.price})" 
-                        class="w-full py-3 bg-[#34495e] hover:bg-[#5dade2] text-white hover:text-[#1a2530] font-bold uppercase brand-font tracking-wider transition duration-300">
-                        Add to Cart
-                    </button>
-                </div>
-            `).join('');
+                `;
+            });
         }
 
-        function renderAdminForms(products) {
-            const container = document.getElementById('admin-form-container');
-            // Check if updates are truly possible (DB connection is up AND admin is logged in)
-            const canWrite = !usingFallbackMode && isAdminLoggedIn; 
-            
-            const buttonClass = canWrite ? 'border-red-500 text-red-500 hover:bg-red-500 hover:text-white' : 'bg-gray-500 cursor-not-allowed text-gray-800 border-gray-500';
-            const buttonText = canWrite ? 'Update' : (usingFallbackMode ? 'Read Only (Offline)' : 'Update Blocked');
+        async function updatePrice(id) {
+            const price = document.getElementById(`price-${id}`).value;
 
-            container.innerHTML = products.map(product => `
-                <div class="p-4 bg-[#1a2530] border border-[#34495e] flex flex-col md:flex-row justify-between items-center space-y-3 md:space-y-0 md:space-x-4">
-                    <span class="font-bold text-lg text-white w-full md:w-1/3 brand-font uppercase">${product.name}</span>
-                    <div class="flex items-center space-x-2 w-full md:w-1/3">
-                        <label class="text-[#5dade2] brand-font">$</label>
-                        <input type="number" step="0.01" min="0" 
-                               id="price-${product.id}" 
-                               value="${Number(product.price).toFixed(2)}" 
-                               class="w-full p-2 bg-[#151f28] border border-[#34495e] text-white focus:border-[#5dade2] focus:outline-none brand-font"
-                               ${!canWrite ? 'disabled' : ''}>
-                    </div>
-                    <button 
-                        onclick="updatePrice('${product.id}')" 
-                        class="w-full md:w-auto py-2 px-6 bg-transparent border ${buttonClass} font-bold uppercase brand-font transition duration-200"
-                        ${!canWrite ? 'disabled' : ''}>
-                        ${buttonText}
-                    </button>
-                </div>
-            `).join('');
-            
-            const loader = document.getElementById('admin-loading');
-            if(loader) loader.classList.add('hidden');
-        }
+            let { error } = await supabase
+                .from("games")
+                .update({ price })
+                .eq("id", id);
 
-        window.updatePrice = async function(productId) {
-            if (!isAdminLoggedIn) {
-                showToastMessage("Access Denied", "You must be logged in as Admin to perform write operations.", 'error');
-                return;
-            }
-            if (usingFallbackMode) {
-                showToastMessage("Offline Mode", "Cannot save changes while in Offline (Read-Only) Mode.", 'error');
-                return;
-            }
+            const msg = document.getElementById("status-message");
+            msg.classList.remove("hidden");
 
-            const inputElement = document.getElementById(`price-${productId}`);
-            let newPrice = parseFloat(inputElement.value);
-
-            if (isNaN(newPrice) || newPrice < 0) return;
-
-            newPrice = parseFloat(newPrice.toFixed(2));
-            const docRef = getProductDocRef(productId);
-            const button = inputElement.parentElement.nextElementSibling;
-            
-            const originalText = button.textContent;
-            button.textContent = '...';
-            
-            try {
-                // Anonymous user attempts to write here. If it fails due to DB rules, the error is caught below.
-                await setDoc(docRef, { price: newPrice }, { merge: true });
-                showToastMessage('Update Success', `Successfully updated ${productId} to $${newPrice}`, 'success');
-            } catch (e) {
-                // Crucial error handling for security/permissions issues
-                if (e.code === 'permission-denied') {
-                    showToastMessage('Permission Denied', 'Database rules prevent this user from writing to the public collection. Check security rules.', 'error');
-                    updateStatus('error', 'Write permission denied');
-                } else {
-                    showToastMessage('Error', 'Error updating: ' + e.message, 'error');
-                }
-            } finally {
-                button.textContent = originalText;
+            if (error) {
+                msg.innerHTML = "❌ Error updating price";
+                msg.classList.add("border-red-400");
+                msg.classList.remove("border-green-400");
+            } else {
+                msg.innerHTML = "✅ Price updated!";
+                msg.classList.add("border-green-400");
+                msg.classList.remove("border-red-400");
             }
         }
-
-        // --- MODAL & MESSAGE HELPERS ---
-        let currentProductId = null;
-        let currentPrice = null;
-
-        window.showPurchaseModal = function(id, name, price) {
-            currentProductId = id;
-            currentPrice = price;
-            document.getElementById('modal-message').textContent = `Purchase "${name}" for $${price.toFixed(2)}?`;
-            const modal = document.getElementById('purchase-modal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-        
-        window.closeModal = function(id) {
-            const modal = document.getElementById(id);
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
-        
-        window.simulatePurchase = function() {
-            if (!currentProductId) return;
-            closeModal('purchase-modal');
-            showToastMessage("Purchase Simulation", "Purchase simulation successful! Thanks for buying.", "success");
-        }
-
-        function showToastMessage(title, message, type) {
-            const modal = document.getElementById('message-modal');
-            const content = document.getElementById('message-modal-content');
-            const titleEl = document.getElementById('msg-title');
-            const textEl = document.getElementById('msg-text');
-            
-            titleEl.textContent = title;
-            textEl.textContent = message;
-
-            content.className = 'bg-[#1a2530] p-8 border-2 max-w-sm w-full';
-
-            if (type === 'success') {
-                titleEl.classList.add('text-green-400');
-                content.classList.add('border-green-400');
-                content.classList.remove('border-red-400');
-            } else { // error or generic
-                titleEl.classList.add('text-red-400');
-                content.classList.add('border-red-400');
-                content.classList.remove('border-green-400');
-            }
-
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-
-        initializeFirebase();
     </script>
+
 </body>
 </html>
